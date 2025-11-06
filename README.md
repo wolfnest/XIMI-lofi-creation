@@ -8,9 +8,10 @@ Overview
 - Output: a single MP4 written under ComfyUI/output/lofi_creation.
 
 Inputs
-- video_url: HTTP(S) URL (direct media or YouTube-like) or local path.
-- music_url: HTTP(S) URL (direct media or YouTube-like) or local path.
+- video_str: IO.STRING (connected): URL or local path.
+- audio_str: IO.STRING (connected): URL or local path.
 - duration_seconds: Target output duration in seconds.
+
 
 Output
 - video_path (STRING): Full path to the generated MP4.
@@ -32,3 +33,6 @@ Usage
 - Provide video_url, music_url, and duration_seconds.
 - The node returns the path to the output MP4.
 
+
+Additional Node
+- String Pass (ximi-ai): Takes a string input from another node and returns the same string. Useful to route or reuse a string value (URL/path/text) in workflows.

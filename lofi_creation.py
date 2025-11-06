@@ -222,9 +222,19 @@ class XimiLofiCreation:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "video_url": ("STRING", {"default": "", "multiline": False}),
-                "music_url": ("STRING", {"default": "", "multiline": False}),
-                "duration_seconds": ("FLOAT", {"default": 600.0, "min": 1.0, "max": 60*60*6, "step": 1.0}),
+                "video_str": (IO.STRING, {
+                    "default": "",
+                    "multiline": False,
+                    "forceInput": True,
+                    "tooltip": "Video URL or local file path provided by another node",
+                }),
+                "audio_str": (IO.STRING, {
+                    "default": "",
+                    "multiline": False,
+                    "forceInput": True,
+                    "tooltip": "Audio URL or local file path provided by another node",
+                }),
+                "duration_seconds": (IO.FLOAT, {"default": 600.0, "min": 1.0, "max": 60*60*6, "step": 1.0}),
             }
         }
 
@@ -233,7 +243,7 @@ class XimiLofiCreation:
     FUNCTION = "create_lofi"
     CATEGORY = "ximi-ai/lofi"
 
-    def create_lofi(self, video_url: str, music_url: str, duration_seconds: float):
+    def create_lofi(self, video_str: str, audio_str: str, duration_seconds: float):
         if duration_seconds <= 0:
             raise ValueError("duration_seconds must be > 0")
 
@@ -243,8 +253,8 @@ class XimiLofiCreation:
         session_dir.mkdir(parents=True, exist_ok=True)
 
         # Download/copy inputs
-        video_local = _download_media(video_url, session_dir, "video", "video")
-        audio_local = _download_media(music_url, session_dir, "audio", "audio")
+        video_local = _download_media(video_str, session_dir, "video", "video")
+        audio_local = _download_media(audio_str, session_dir, "audio", "audio")
 
         out_name = f"lofi_{int(time.time())}.mp4"
         out_path = session_dir / out_name
