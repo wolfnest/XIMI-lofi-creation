@@ -4,13 +4,13 @@ Author: ximi-ai
 
 Overview
 - Downloads a video and an audio from URLs or local paths.
-- Loops the video to reach the requested duruation and merges the audio.
+- Loops the video to reach the requested duration and merges the audio.
 - Output: a single MP4 written under ComfyUI/output/lofi_creation.
 
 Inputs
 - video_str: IO.STRING (connected): URL or local path.
 - audio_str: IO.STRING (connected): URL or local path.
-- duruation: Target output duruation in seconds.
+- duration: Target output duration in seconds.
 
 
 Output
@@ -30,7 +30,7 @@ Installation
 
 Usage
 - Add the node "lofi-creation" to your workflow.
-- Provide video_url, music_url, and duruation.
+- Provide video_url, music_url, and duration.
 - The node returns the path to the output MP4.
 
 
