@@ -212,7 +212,7 @@ class XimiLofiCreation:
     Inputs:
     - video_url (string): URL or local path to a video
     - music_url (string): URL or local path to an audio
-    - duration_seconds (int/float): Output duration in seconds
+    - duration (int/float): Output duration in seconds
 
     Output:
     - video_path (string): Path to the generated MP4
@@ -234,7 +234,7 @@ class XimiLofiCreation:
                     "forceInput": True,
                     "tooltip": "Audio URL or local file path provided by another node",
                 }),
-                "duration_seconds": (IO.FLOAT, {"default": 600.0, "min": 1.0, "max": 60*60*6, "step": 1.0}),
+                "duration": (IO.FLOAT, {"default": 600.0, "min": 1.0, "max": 60*60*6, "step": 1.0}),
             }
         }
 
@@ -243,9 +243,9 @@ class XimiLofiCreation:
     FUNCTION = "create_lofi"
     CATEGORY = "ximi-ai/lofi"
 
-    def create_lofi(self, video_str: str, audio_str: str, duration_seconds: float):
-        if duration_seconds <= 0:
-            raise ValueError("duration_seconds must be > 0")
+    def create_lofi(self, video_str: str, audio_str: str, duration: float):
+        if duration <= 0:
+            raise ValueError("duration must be > 0")
 
         _require_ffmpeg()
 
@@ -261,10 +261,10 @@ class XimiLofiCreation:
 
         # Try simple infinite loop + trim
         try:
-            _ffmpeg_merge_loop(video_local, audio_local, float(duration_seconds), out_path)
+            _ffmpeg_merge_loop(video_local, audio_local, float(duration), out_path)
         except Exception:
             # Fallback to concat method
-            _ffmpeg_concat_then_merge(video_local, audio_local, float(duration_seconds), out_path)
+            _ffmpeg_concat_then_merge(video_local, audio_local, float(duration), out_path)
 
         # Wrap the produced file as a Comfy VIDEO output
         video_obj = VideoFromFile(str(out_path))

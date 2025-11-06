@@ -10,7 +10,7 @@ Overview
 Inputs
 - video_str: IO.STRING (connected): URL or local path.
 - audio_str: IO.STRING (connected): URL or local path.
-- duration_seconds: Target output duration in seconds.
+- duration: Target output duration in seconds.
 
 
 Output
@@ -30,7 +30,7 @@ Installation
 
 Usage
 - Add the node "lofi-creation" to your workflow.
-- Provide video_url, music_url, and duration_seconds.
+- Provide video_url, music_url, and duration.
 - The node returns the path to the output MP4.
 
 
