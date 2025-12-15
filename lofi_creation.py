@@ -234,7 +234,7 @@ class XimiLofiCreation:
                     "forceInput": True,
                     "tooltip": "Audio URL or local file path provided by another node",
                 }),
-                "duration": (IO.FLOAT, {"default": 600.0, "min": 1.0, "max": 60*60*6, "step": 1.0}),
+                "duration": (IO.FLOAT, {"default": 600.0, "min": 0.0, "max": 60*60*6, "step": 1.0}),
             }
         }
 
@@ -244,8 +244,8 @@ class XimiLofiCreation:
     CATEGORY = "ximi-ai/lofi"
 
     def create_lofi(self, video_str: str, audio_str: str, duration: float):
-        if duration <= 0:
-            raise ValueError("duration must be > 0")
+        # if duration <= 0, we will auto-detect from audio length later
+
 
         _require_ffmpeg()
 
@@ -255,6 +255,12 @@ class XimiLofiCreation:
         # Download/copy inputs
         video_local = _download_media(video_str, session_dir, "video", "video")
         audio_local = _download_media(audio_str, session_dir, "audio", "audio")
+
+        if duration <= 0:
+            detected = _probe_duration_seconds(audio_local)
+            if detected <= 0:
+                raise ValueError("duration <= 0 and could not detect audio duration")
+            duration = detected
 
         out_name = f"lofi_{int(time.time())}.mp4"
         out_path = session_dir / out_name
